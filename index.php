@@ -99,7 +99,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 //buat template message untuk menampung banyak message type
                   //$multiMessageBuilder = new MultiMessageBuilder();
                   //pesan pertama
-                  $imageUrl = 'https://i.ytimg.com/vi/x3Ovjh7MUAY/maxresdefault.jpg';
+                  $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/static/rs-logo-1.png';
                   $buttonTemplateBuilder = new ButtonTemplateBuilder(
                     'Rumah Sakit Universitas Brawijaya',
                     'Jl. Soekarno - Hatta, Lowokwaru, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141',
