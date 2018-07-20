@@ -1,0 +1,11 @@
+{
+    "name": "meepwnd/health-assistant",
+    "description": "Line Chatbot untuk Kompetisi Compfest X Chatbot Invasion",
+    "type": "project",
+    "require": {
+        "php": "^7.2",
+        "ext-mbstring": "*",
+        "slim/slim": "^3.10",
+        "vlucas/phpdotenv": "^2.5"
+    }
+}
