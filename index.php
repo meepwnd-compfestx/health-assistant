@@ -90,14 +90,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   }
               } else if ($event['message']['text'] == "halo") {
                 // code...
-                $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/closed.png';
-                $buttonTemplateBuilder = new ButtonTemplateBuilder('adsadas', 'asasdasd', $imageUrl,
-                  [
-                    new UriTemplateActionBuilder('Lokasi', 'https://www.google.com/maps/place/Rumah+Sakit+Universitas+Brawijaya/')
-                  ]
-                );
-                $templateMessage = new TemplateMessageBuilder('Alt text', $buttonTemplateBuilder);
-                $res = $bot->replyMessage($event['replyToken'], $templateMessage);
+                $result = $bot->replyText($event['replyToken'], 'Halo juga');
               //case 1a "lihat lokasi rs"
               } else if (mb_strtolower($event['message']['text']) == "lihat lokasi rs"
                           || mb_strtolower($event['message']['text']) == "lokasi rs"
@@ -106,7 +99,14 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 //buat template message untuk menampung banyak message type
                   //$multiMessageBuilder = new MultiMessageBuilder();
                   //pesan pertama
-                  $result = $bot->replyText($event['replyToken'], 'Halo juga');
+                  $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/closed.png';
+                  $buttonTemplateBuilder = new ButtonTemplateBuilder('adsadas', 'asasdasd', $imageUrl,
+                    [
+                      new UriTemplateActionBuilder('Lokasi', 'https://www.google.com/maps/place/Rumah+Sakit+Universitas+Brawijaya/')
+                    ]
+                  );
+                  $templateMessage = new TemplateMessageBuilder('Alt text', $buttonTemplateBuilder);
+                  $res = $bot->replyMessage($event['replyToken'], $templateMessage);
               }
             }
         }
