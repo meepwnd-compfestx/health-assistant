@@ -105,7 +105,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                       new UriTemplateActionBuilder('Lokasi', 'https://www.google.com/maps/place/Rumah+Sakit+Universitas+Brawijaya/')
                     ]
                   );
-                  $templateMessage = new TemplateMessageBuilder('Alt text', $buttonTemplateBuilder);
+                  $templateMessage = new TemplateMessageBuilder('Lokasi Rumah Sakit', $buttonTemplateBuilder);
                   $res = $bot->replyMessage($event['replyToken'], $templateMessage);
               }
             }
