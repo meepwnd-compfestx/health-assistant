@@ -99,7 +99,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 //buat template message untuk menampung banyak message type
                   //$multiMessageBuilder = new MultiMessageBuilder();
                   //pesan pertama
-                  $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/static/closed.png';
+                  $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/static/rs-logo-1.png';
                   $buttonTemplateBuilder = new ButtonTemplateBuilder(
                     'RSUB',
                     'Jl. Soekarno - Hatta',
