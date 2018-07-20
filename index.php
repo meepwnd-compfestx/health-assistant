@@ -101,8 +101,8 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   //pesan pertama
                   $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/static/closed.png';
                   $buttonTemplateBuilder = new ButtonTemplateBuilder(
-                    'Rumah Sakit Universitas Brawijaya',
-                    'Jl. Soekarno - Hatta, Lowokwaru, Kec. Lowokwaru, Kota Malang, Jawa Timur 65141',
+                    'RSUB',
+                    'Jl. Soekarno - Hatta',
                     $imageUrl,
                     [
                       new UriTemplateActionBuilder('Lokasi', 'https://www.google.com/maps/place/Rumah+Sakit+Universitas+Brawijaya/')
