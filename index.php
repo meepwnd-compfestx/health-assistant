@@ -90,7 +90,8 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                     return $response->withJson($result->getJSONDecodedBody(), $result->getHTTPStatus());
                   }
-              } else if ($event['message']['text'] == "halo") {
+              } else if (mb_strtolower($event['message']['text']) == "halo"
+                          || mb_strtolower($event['message']['text']) == "halo bot") {
                 // code...
                 $result = $bot->replyText($event['replyToken'], 'Hai ! Aku health-assistant siap membantu anda ! '.emoticonBuilder("10008D").
               "\nMaaf, saat ini saya hanya bisa menampilkan jadwal praktek dari Rumah Sakit Universitas Brawijaya Malang :(".
