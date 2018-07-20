@@ -5,6 +5,7 @@ use \LINE\LINEBot;
 use \LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use \LINE\LINEBot\SignatureValidator as SignatureValidator;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use \LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
