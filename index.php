@@ -5,12 +5,14 @@ use \LINE\LINEBot;
 use \LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use \LINE\LINEBot\SignatureValidator as SignatureValidator;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
+use \LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use \LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
 use \Dotenv\Dotenv;
 
+include('functional.php');
 // set false for production
 $pass_signature = true;
 
@@ -90,15 +92,18 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   }
               } else if ($event['message']['text'] == "halo") {
                 // code...
-                $result = $bot->replyText($event['replyToken'], 'Halo juga');
+                $result = $bot->replyText($event['replyToken'], 'Hai ! Aku health-assistant siap membantu anda ! '.emoticonBuilder("10008D").
+              "\nMaaf, saat ini saya hanya bisa menampilkan jadwal praktek dari Rumah Sakit Universitas Brawijaya Malang :(".
+              "\nCukup ketik saja 'Lihat lokasi RS' jika ingin melihat lokasinya.");
               //case 1a "lihat lokasi rs"
               } else if (mb_strtolower($event['message']['text']) == "lihat lokasi rs"
                           || mb_strtolower($event['message']['text']) == "lokasi rs"
                           || mb_strtolower($event['message']['text']) == "lihat rs") {
                 // code
-                //buat template message untuk menampung banyak message type
-                  //$multiMessageBuilder = new MultiMessageBuilder();
-                  //pesan pertama
+                //buat template message untuk menampung banyak message type (multiple)
+                  $multiMessageBuilder = new MultiMessageBuilder();
+
+                  //button message
                   $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/static/rs-logo-1.png';
                   $buttonTemplateBuilder = new ButtonTemplateBuilder(
                     'RSUB',
@@ -109,7 +114,11 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                     ]
                   );
                   $templateMessage = new TemplateMessageBuilder('Lokasi Rumah Sakit', $buttonTemplateBuilder);
-                  $res = $bot->replyMessage($event['replyToken'], $templateMessage);
+
+                  $multiMessageBuilder->add($templateMessage)
+                  ->add(new TextMessageBuilder("Apakah anda ingin melihat jadwal prakteknya juga?".
+                    "\nKetik saja 'lihat jadwal praktek'"));
+                  $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
               }
             }
         }
