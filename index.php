@@ -6,8 +6,10 @@ use \LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use \LINE\LINEBot\SignatureValidator as SignatureValidator;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
 use \LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
-use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use \LINE\LINEBot\MessageBuilder\TextMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
 use \Dotenv\Dotenv;
@@ -120,6 +122,14 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   ->add(new TextMessageBuilder("Apakah anda ingin melihat jadwal prakteknya juga?".
                     "\nKetik saja 'lihat jadwal praktek'"));
                   $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+              } else if (mb_strtolower($event['message']['text']) == "lihat jadwal praktek"
+                          || mb_strtolower($event['message']['text']) == "lihat jadwal") {
+
+                $text = "Mau lihat jadwal praktek poli apa?".
+                "\n1. a".
+                "\n2. b".
+                "\nKetikkan nomor nya saja.";
+                $bot->replyText($event['replyToken'], $text);
               }
             }
         }
