@@ -1,4 +1,9 @@
 <?php
+use \Dotenv\Dotenv;
+//load env
+$dotenv = new Dotenv(__DIR__);
+$dotenv->load();
+
 try{
 //Set DSN data source name
   $db = array('host'=>$_ENV['DB_HOST'], 'dbname'=>$_ENV['DB_NAME'], 'user'=>$_ENV['DB_USERNAME'], 'password'=>$_ENV['DB_PASSWORD'], 'port'=>5432);

@@ -12,15 +12,10 @@ use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
-use \Dotenv\Dotenv;
 
 include('functional.php');
 // set false for production
 $pass_signature = true;
-
-//load env
-$dotenv = new Dotenv(__DIR__);
-$dotenv->load();
 
 require 'db.php';
 
