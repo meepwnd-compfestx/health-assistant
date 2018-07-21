@@ -63,7 +63,14 @@ function executeQuery($pdo, $query){
     echo $e->getMessage();
   }
 }
-
+$statement = executeQuery($pdo, "SELECT * FROM POLI");
+$rslt = $statement->fetchAll();
+$rslt = array();
+$tet = "null\n";
+foreach ($rslt as $row) {
+  // code...
+  $tet = $row->ID.". ".$row->NAMA_POLI."\n";
+}
 $configs =  [
     'settings' => ['displayErrorDetails' => true],
 ];
@@ -71,16 +78,9 @@ $c = new \Slim\Container($configs);
 $app = new Slim\App($c);
 
 //home route
-$app->get('/', function() use($channel_access_token, $channel_secret, $pdo)
+$app->get('/', function() use($channel_access_token, $channel_secret, $pdo, $tet)
 {
   echo "OK\n";
-  $statement = executeQuery($pdo, "SELECT * FROM POLI");
-  $rslt = $statement->fetchAll();
-  $rslt = array();
-  foreach ($rslt as $row) {
-    // code...
-    $tet = $row->ID.". ".$row->NAMA_POLI."\n";
-  }
   echo $tet;
 });
 
@@ -167,9 +167,9 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                 $text = "Mau lihat jadwal praktek poli apa?";
                 $statement = executeQuery($pdo, "select * from poli");
-                $rslt = $statement->fetchAll();
-                $rslt = array();
-                foreach ($rslt as $row) {
+                $reslt = $statement->fetchAll();
+                $reslt = array();
+                foreach ($reslt as $row) {
                   // code...
                   $text = $text.$row->id.". ".$row->nama_poli."\n";
                 }
