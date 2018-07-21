@@ -134,15 +134,15 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   // code...
                   $text = $text.$row->id.". ".$row->nama_poli."\n";
                 }
-                $text = $text."Ketikkan nomornya saja."
+                $text = $text."Ketikkan nomornya saja.";
                 //mulai session
                 session_start();
-                $_SESSION['CONV'] = 'TRUE';
+                $_SESSION['CONV'] = "TRUE";
                 $bot->replyText($event['replyToken'], $text);
               } else if ($_SESSION['CONV'] == 'TRUE' &&
                   ($event['message']['text'] <= 1 && $event['message']['text'] >= 10)) {
                 // code...
-                
+
               }
             }
         }
