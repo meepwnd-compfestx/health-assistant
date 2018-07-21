@@ -1,4 +1,5 @@
 <?php
+require __DIR__ . '/vendor/autoload.php';
 use \Dotenv\Dotenv;
 //load env
 $dotenv = new Dotenv(__DIR__);
