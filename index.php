@@ -148,17 +148,32 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/static/open.png';
 
                 $carouselColumn = array();
-                for ($i=0; $i < 5; $i++) {
-                  // code...
-                  $carouselColumn[$i] = new CarouselColumnTemplateBuilder('Doker '.$i, 'Senin-Jumat 08.00-15.00', $imageUrl, [
-                      new MessageTemplateActionBuilder('Say message', 'hello hello')
+                $counter = 0;
+                $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like ".generateDay(date('N'));
+
+                $result = executeQuery($conn, $q);
+
+                foreach ($result as $row) {
+                  $carouselColumn[$counter] = new CarouselColumnTemplateBuilder('Dokter '.($counter+1), $row['nama_dokter'], $imageUrl, [
+                      new MessageTemplateActionBuilder('Cek Detail', '/detailjadwal')
                   ]);
+                  $counter++;
                 }
 
                 $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn);
                 $templateMessage = new TemplateMessageBuilder('Jadwal Praktek', $carouselTemplateBuilder);
 
-                $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli \$id".$event['message']['text']))
+                $q1 = "select nama_poli from poli where id=".$event['message']['text'];
+
+                $result1 = executeQuery($conn, $q1);
+
+                $selectedPoli = "";
+
+                foreach ($result1 as $row) {
+                  $selectedPoli = $row['nama_poli'];
+                }
+
+                $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli ".$selectedPoli)
                 ->add($templateMessage);
 
                 $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);

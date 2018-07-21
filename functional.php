@@ -12,4 +12,31 @@ function executeQuery($conn, $query){
   $array = pg_fetch_all($result);
   return $array;
 }
+
+function generateDay($currDay){
+  $strDay = "";
+
+  if ($currDay == 1) {
+    // code...
+    return "SENIN";
+  } else if ($currDay == 2) {
+    // code...
+    return "SELASA"
+  } else if ($currDay == 3) {
+    // code...
+    return "RABU"
+  } else if ($currDay == 4) {
+    // code...
+    return "KAMIS"
+  } else if ($currDay == 5) {
+    // code...
+    return "JUMAT"
+  } else if ($currDay == 6) {
+    // code...
+    return "SABTU"
+  } else if ($currDay == 7) {
+    // code...
+    return "MINGGU"
+  }
+}
 ?>
