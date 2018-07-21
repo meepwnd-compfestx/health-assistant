@@ -156,7 +156,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   ]);
                 }
 
-                $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn)
+                $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn);
                 $templateMessage = new TemplateMessageBuilder('Jadwal Praktek', $carouselTemplateBuilder);
 
                 $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli \$id".$event['message']['text']))
