@@ -38,7 +38,7 @@ $app = new Slim\App($configs);
 $app->get('/', function($request, $response) use($channel_access_token, $channel_secret, $conn)
 {
   echo "OK\n";
-  $array = executeQuery($conn, "SELECT * FROM POLI");
+  $array = executeQuery($conn, "SELECT * FROM PUBLIC.POLI");
   foreach ($array as $row) {
     // code...
     $tet = $row->ID.". ".$row->NAMA_POLI."\n";
