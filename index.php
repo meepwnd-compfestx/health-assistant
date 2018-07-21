@@ -187,9 +187,9 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 $result = executeQuery($conn, $query);
                 foreach($result as $row){
                   $bot->replyText($event['replyToken'], "-------Detail Jadwal Praktek-------\n"
-                    .emoticonBuilder("10004E")." Nama Poli: ".$row['nama_poli']
-                    .emoticonBuilder("100041")." Nama Dokter: ".$row['nama_dokter']
-                    .emoticonBuilder("1000A9")." Hari: ".$row['hari']
+                    .emoticonBuilder("10004E")." Nama Poli: ".$row['nama_poli']."\n"
+                    .emoticonBuilder("100041")." Nama Dokter: ".$row['nama_dokter']."\n"
+                    .emoticonBuilder("1000A9")." Hari: ".$row['hari']."\n"
                     .emoticonBuilder("100071")." Jam: ".$row['jam']);
                 }
               }
