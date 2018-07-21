@@ -22,7 +22,7 @@ $pass_signature = true;
 $dotenv = new Dotenv(__DIR__);
 $dotenv->load();
 
-include('db.php');
+require('db.php');
 
 // set LINE channel_access_token and channel_secret
 $channel_access_token = $_ENV['CHANNEL_ACCESS_TOKEN'];
