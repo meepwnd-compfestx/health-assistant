@@ -18,10 +18,11 @@ include('functional.php');
 // set false for production
 $pass_signature = true;
 
-//env
-
+//load env
 $dotenv = new Dotenv(__DIR__);
 $dotenv->load();
+
+require('db.php');
 
 // set LINE channel_access_token and channel_secret
 $channel_access_token = $_ENV['CHANNEL_ACCESS_TOKEN'];
@@ -44,7 +45,7 @@ $app->get('/', function($request, $response) use($channel_access_token, $channel
   echo "OK\n";
 });
 
-$app->post('/webhook', function ($request, $response) use ($bot, $pass_signature)
+$app->post('/webhook', function ($request, $response) use ($bot, $pass_signature, $pdo)
 {
   // get request body and line signature header
 
@@ -113,7 +114,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                     'Jl. Soekarno - Hatta',
                     $imageUrl,
                     [
-                      new UriTemplateActionBuilder('Lokasi', 'https://www.google.com/maps/place/Rumah+Sakit+Universitas+Brawijaya/')
+                      new UriTemplateActionBuilder('Lokasi', 'https://www.google.com/maps/place/Rumah+Sakit+Universitas+Brawijaya/@-7.9408252,112.6210425,18z/data=!4m5!3m4!1s0x2dd629e076b6db3f:0xe31a591bdc49e6fe!8m2!3d-7.9409421!4d112.6217452')
                     ]
                   );
                   $templateMessage = new TemplateMessageBuilder('Lokasi Rumah Sakit', $buttonTemplateBuilder);
@@ -125,11 +126,23 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
               } else if (mb_strtolower($event['message']['text']) == "lihat jadwal praktek"
                           || mb_strtolower($event['message']['text']) == "lihat jadwal") {
 
-                $text = "Mau lihat jadwal praktek poli apa?".
-                "\n1. a".
-                "\n2. b".
-                "\nKetikkan nomor nya saja.";
+                $text = "Mau lihat jadwal praktek poli apa?";
+                $statement = executeQuery($pdo, "select * from poli");
+                $rslt = $statement->fetchAll();
+                $rslt = array();
+                foreach ($rslt as $row) {
+                  // code...
+                  $text = $text.$row->id.". ".$row->nama_poli."\n";
+                }
+                $text = $text."Ketikkan nomornya saja."
+                //mulai session
+                session_start();
+                $_SESSION['CONV'] = 'TRUE';
                 $bot->replyText($event['replyToken'], $text);
+              } else if ($_SESSION['CONV'] == 'TRUE' &&
+                  ($event['message']['text'] <= 1 && $event['message']['text'] >= 10)) {
+                // code...
+                
               }
             }
         }
