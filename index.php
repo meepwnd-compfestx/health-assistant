@@ -153,7 +153,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like ".generateDay(date('N'));
 
                 $result = executeQuery($conn, $q);
-                if (count($result) > 0) {
+                if ($result) {
                   foreach ($result as $row) {
                     $carouselColumn[$counter] = new CarouselColumnTemplateBuilder('Dokter '.($counter+1), $row['nama_dokter'], $imageUrl, [
                         new MessageTemplateActionBuilder('Cek Detail', '/detailjadwal'.$row['id'])
