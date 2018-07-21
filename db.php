@@ -1,7 +1,7 @@
 <?php
 try{
 //Set DSN data source name
-  $db = array('host'=>getenv('DB_HOST'), 'dbname'=>getenv('DB_NAME'), 'user'=>getenv('DB_USERNAME'), 'password'=>getenv('DB_PASSWORD'), 'port'=>"5432");
+  $db = array('host'=>getenv('DB_HOST'), 'dbname'=>getenv('DB_NAME'), 'user'=>getenv('DB_USERNAME'), 'password'=>getenv('DB_PASSWORD'), 'port'=>5432);
   $dsn = "pgsql:host=" . $db['host'] . ";port=" . $db['port'] .";dbname=" . $db['dbname'] . ";user=" . $db['user'] . ";password=" . $db['password'] . ";sslmode=require;";
 //create a pdo instance
   $pdo = new PDO($dsn, $db['user'], $db['password']);
