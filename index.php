@@ -14,6 +14,7 @@ use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
 use \Dotenv\Dotenv;
 
+include('functional.php');
 // set false for production
 $pass_signature = true;
 
@@ -21,8 +22,7 @@ $pass_signature = true;
 $dotenv = new Dotenv(__DIR__);
 $dotenv->load();
 
-include('functional.php');
-//include('db.php');
+require 'db.php';
 
 // set LINE channel_access_token and channel_secret
 $channel_access_token = $_ENV['CHANNEL_ACCESS_TOKEN'];
@@ -32,61 +32,24 @@ $channel_secret = $_ENV['CHANNEL_SECRET'];
 $httpClient = new CurlHTTPClient($channel_access_token);
 $bot = new LINEBot($httpClient, ['channelSecret' => $channel_secret]);
 
-//db
 
-try{
-//Set DSN data source name
-  $db = array('host'=>$_ENV['DB_HOST'], 'dbname'=>$_ENV['DB_NAME'], 'user'=>$_ENV['DB_USERNAME'], 'password'=>$_ENV['DB_PASSWORD'], 'port'=>5432);
-  $host = $db['host'];
-  $port = $db['port'];
-  $dbname = $db['dbname'];
-  $user = $db['user'];
-  $password = $db['password'];
-
-  $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require;user=$user;password=$password;";
-//create a pdo instance
-  $pdo = new PDO($dsn, $user, $password);
-  $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_OBJ);
-  $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES,false);
-  $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-}
-catch (PDOException $e) {
-  echo 'Connection failed: ' . $e->getMessage();
-}
-
-function executeQuery($pdo, $query){
-  try{
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    return $stmt;
-  } catch (PDOException $e) {
-    echo $e->getMessage();
-  }
-}
-
-try{
-  $stmt = $pdo->prepare("SELECT * FROM POLI");
-  $stmt->execute();
-  $rslt = $stmt->fetchAll();
-  $rslt = array();
-} catch (PDOException $e) {
-  echo $e->getMessage();
-}
-$tet = "null\n";
-foreach ($rslt as $row) {
-  // code...
-  $tet = $row->ID.". ".$row->NAMA_POLI."\n";
-}
 $configs =  [
     'settings' => ['displayErrorDetails' => true],
 ];
-$c = new \Slim\Container($configs);
-$app = new Slim\App($c);
+
+$app = new Slim\App($configs);
 
 //home route
-$app->get('/', function() use($channel_access_token, $channel_secret, $pdo, $tet)
+$app->get('/', function($request, $response) use($channel_access_token, $channel_secret, $pdo)
 {
   echo "OK\n";
+  $statement = executeQuery($pdo, "SELECT * FROM POLI");
+  $rslt = $statement->fetchAll();
+  $rslt = array();
+  foreach ($rslt as $row) {
+    // code...
+    $tet = $row->ID.". ".$row->NAMA_POLI."\n";
+  }
   echo $tet;
 });
 
@@ -173,9 +136,9 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                 $text = "Mau lihat jadwal praktek poli apa?";
                 $statement = executeQuery($pdo, "select * from poli");
-                $reslt = $statement->fetchAll();
-                $reslt = array();
-                foreach ($reslt as $row) {
+                $rslt = $statement->fetchAll();
+                $rslt = array();
+                foreach ($rslt as $row) {
                   // code...
                   $text = $text.$row->id.". ".$row->nama_poli."\n";
                 }
