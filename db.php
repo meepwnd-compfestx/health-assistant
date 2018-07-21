@@ -1,4 +1,9 @@
 <?php
+require __DIR__ . '/vendor/autoload.php';
+use \Dotenv\Dotenv;
+
+$dotenv = new Dotenv(__DIR__);
+$dotenv->load();
 try{
 //Set DSN data source name
   $db = array('host'=>getenv('DB_HOST'), 'dbname'=>getenv('DB_NAME'), 'user'=>getenv('DB_USERNAME'), 'password'=>getenv('DB_PASSWORD'), 'port'=>5432);
