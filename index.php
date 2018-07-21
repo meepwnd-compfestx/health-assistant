@@ -164,7 +164,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn);
                   $templateMessage = new TemplateMessageBuilder('Jadwal Praktek', $carouselTemplateBuilder);
                 } else {
-                  $templateMessage = new TextMessageBuilder("Maaf, hari ini tidak ada dokter yang membuka jadwal praktek.".emoticonBuilder("100010"));
+                  $templateMessage = new TextMessageBuilder("Maaf, hari ini (".mb_strtolower(generateDay(date('N'))).") tidak ada dokter yang membuka jadwal praktek.".emoticonBuilder("100010"));
                 }
 
                 $q1 = "select nama_poli from poli where id=".$event['message']['text'];
