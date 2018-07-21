@@ -43,7 +43,7 @@ $app->get('/', function($request, $response) use($channel_access_token, $channel
     // code...
     $tet = $row->ID.". ".$row->NAMA_POLI."\n";
   }
-  echo $arr."\n";
+  print_r($arr);
   echo $tet;
 });
 
