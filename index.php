@@ -14,7 +14,6 @@ use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
 use \Dotenv\Dotenv;
 
-include('functional.php');
 // set false for production
 $pass_signature = true;
 
@@ -22,7 +21,8 @@ $pass_signature = true;
 $dotenv = new Dotenv(__DIR__);
 $dotenv->load();
 
-require('db.php');
+include('functional.php');
+include('db.php');
 
 // set LINE channel_access_token and channel_secret
 $channel_access_token = $_ENV['CHANNEL_ACCESS_TOKEN'];
