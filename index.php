@@ -54,6 +54,16 @@ catch (PDOException $e) {
   echo 'Connection failed: ' . $e->getMessage();
 }
 
+function executeQuery($pdo, $query){
+  try{
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return $stmt;
+  } catch (PDOException $e) {
+    echo $e->getMessage();
+  }
+}
+
 $configs =  [
     'settings' => ['displayErrorDetails' => true],
 ];
