@@ -6,4 +6,14 @@ function emoticonBuilder($code){
   return $emoticon;
 }
 
+
+function executeQuery($pdo, $query){
+  try{
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return $stmt;
+  } catch (PDOException $e) {
+    echo $e->getMessage();
+  }
+}
 ?>

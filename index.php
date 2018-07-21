@@ -43,7 +43,6 @@ $app = new Slim\App($configs);
 $app->get('/', function($request, $response) use($channel_access_token, $channel_secret)
 {
   echo "OK\n";
-  echo getenv('DB_HOST');
 });
 
 $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature, $pdo)
