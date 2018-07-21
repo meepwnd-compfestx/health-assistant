@@ -35,16 +35,9 @@ $configs =  [
 $app = new Slim\App($configs);
 
 //home route
-$app->get('/', function($request, $response) use($channel_access_token, $channel_secret, $conn)
+$app->get('/', function($request, $response) use($channel_access_token, $channel_secret)
 {
   echo "OK\n";
-  $arr = executeQuery($conn, "select * from public.poli");
-  foreach ($array as $row) {
-    // code...
-    $tet = $row['ID'].". ".$row['NAMA_POLI']."\n";
-  }
-  print_r($arr);
-  echo $tet;
 });
 
 $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature, $conn)
@@ -78,6 +71,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             {
               if (mb_strtolower(substr($event['message']['text'], 0, 6)) == 'apakah'
                   && substr($event['message']['text'], -1) == '?') {
+                  //mengacak jawaban kerang kampang
                   $temp = rand(0, 2);
                   if ($temp == 0) {
                     # code...
@@ -95,6 +89,12 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                     return $response->withJson($result->getJSONDecodedBody(), $result->getHTTPStatus());
                   }
+              } else if (mb_strtolower($event['message']['text']) == "oyi"
+                      || mb_strtolower($event['message']['text']) == "oyii"
+                      || mb_strtolower($event['message']['text']) == "oyi lur") {
+
+                $result = $bot->replyText($event['replyToken'], 'oyiiiii sam '.emoticonBuilder("100078"));
+
               } else if (mb_strtolower($event['message']['text']) == "halo"
                           || mb_strtolower($event['message']['text']) == "halo bot") {
                 // code...
