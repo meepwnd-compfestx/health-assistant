@@ -40,9 +40,17 @@ $configs =  [
 $app = new Slim\App($configs);
 
 //home route
-$app->get('/', function($request, $response) use($channel_access_token, $channel_secret)
+$app->get('/', function($request, $response) use($channel_access_token, $channel_secret, $pdo)
 {
   echo "OK\n";
+  $statement = executeQuery($pdo, "select * from poli");
+  $rslt = $statement->fetchAll();
+  $rslt = array();
+  foreach ($rslt as $row) {
+    // code...
+    $tet = $row->id.". ".$row->nama_poli."\n";
+  }
+  echo $tet;
 });
 
 $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature, $pdo)
