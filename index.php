@@ -67,11 +67,11 @@ function executeQuery($pdo, $query){
 $configs =  [
     'settings' => ['displayErrorDetails' => true],
 ];
-
-$app = new Slim\App($configs);
+$c = new \Slim\Container($configs);
+$app = new Slim\App($c);
 
 //home route
-$app->get('/', function($request, $response) use($channel_access_token, $channel_secret, $pdo)
+$app->get('/', function() use($channel_access_token, $channel_secret, $pdo)
 {
   echo "OK\n";
   $statement = executeQuery($pdo, "SELECT * FROM POLI");
