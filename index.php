@@ -132,7 +132,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                 foreach ($array as $row) {
                   // code...
-                  $text = $text.$row->id.". ".$row->nama_poli."\n";
+                  $text = $text.$row->ID.". ".$row->NAMA_POLI."\n";
                 }
                 $text = $text."Ketikkan nomornya saja.";
                 //mulai session
