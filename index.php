@@ -137,14 +137,33 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 }
                 $text = $text."Ketikkan nomornya saja.";
                 //mulai session
-                //session_start();
-                //$_SESSION['CONV'] = "TRUE";
+                session_start();
+                $_SESSION['CONV'] = "TRUE";
                 $bot->replyText($event['replyToken'], $text);
-              } /*else if ($_SESSION['CONV'] == 'TRUE' &&
+              } else if ($_SESSION['CONV'] == 'TRUE' &&
                   ($event['message']['text'] <= 1 && $event['message']['text'] >= 10)) {
                 // code...
+                $multiMessageBuilder = new MultiMessageBuilder();
 
-              }*/
+                //carousel message
+                $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/static/open.png';
+
+                $carouselColumn = array();
+                for ($i=0; $i < 5; $i++) {
+                  // code...
+                  $carouselColumn[$i] = new CarouselColumnTemplateBuilder('Doker '.$i, 'Hari: Senin-Jumat\nJam: 08.00-15.00', $imageUrl, [
+                      new MessageTemplateActionBuilder('Say message', 'hello hello')
+                  ]);
+                }
+
+                $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn)
+                $templateMessage = new TemplateMessageBuilder('Jadwal Praktek', $carouselTemplateBuilder);
+
+                $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli \$id".$event['message']['text']))
+                ->add($templateMessage);
+
+                $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+              }
             }
         }
       }
