@@ -150,7 +150,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 $carouselColumn = array();
                 for ($i=0; $i < 5; $i++) {
                   // code...
-                  $carouselColumn[$i] = new CarouselColumnTemplateBuilder('Doker '.$i, 'Hari: Senin-Jumat\nJam: 08.00-15.00', $imageUrl, [
+                  $carouselColumn[$i] = new CarouselColumnTemplateBuilder('Doker '.$i, 'Senin-Jumat Jam: 08.00-15.00', $imageUrl, [
                       new MessageTemplateActionBuilder('Say message', 'hello hello')
                   ]);
                 }
