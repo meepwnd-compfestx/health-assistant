@@ -43,7 +43,7 @@ try{
   $user = $db['user'];
   $password = $db['password'];
 
-  $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password;";
+  $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;sslmode=require;user=$user;password=$password;";
 //create a pdo instance
   $pdo = new PDO($dsn, $user, $password);
   $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_OBJ);
@@ -63,6 +63,7 @@ function executeQuery($pdo, $query){
     echo $e->getMessage();
   }
 }
+
 try{
   $stmt = $pdo->prepare("SELECT * FROM POLI");
   $stmt->execute();
