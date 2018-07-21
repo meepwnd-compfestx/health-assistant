@@ -128,8 +128,8 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           || mb_strtolower($event['message']['text']) == "lihat jadwal") {
 
                 $text = "Mau lihat jadwal praktek poli apa?";
-                $array = executeQuery($conn, "select * from poli");
-                
+                $array = executeQuery($conn, "select * from public.poli");
+
                 foreach ($array as $row) {
                   // code...
                   $text = $text.$row->id.". ".$row->nama_poli."\n";
