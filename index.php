@@ -173,7 +173,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   $selectedPoli = $row['nama_poli'];
                 }
 
-                $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli ".$selectedPoli)
+                $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli ".$selectedPoli))
                 ->add($templateMessage);
 
                 $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
