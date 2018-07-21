@@ -18,7 +18,7 @@ function generateDay($currDay){
 
   if ($currDay == 1) {
     // code...
-    return "'SENIN'";
+    return "'SABTU'";
   } else if ($currDay == 2) {
     // code...
     return "'SELASA'";
@@ -33,7 +33,7 @@ function generateDay($currDay){
     return "'JUMAT'";
   } else if ($currDay == 6) {
     // code...
-    return "'SABTU'";
+    return "'SENIN'";
   } else if ($currDay == 7) {
     // code...
     return "'MINGGU'";

@@ -153,16 +153,19 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like ".generateDay(date('N'));
 
                 $result = executeQuery($conn, $q);
+                if (count($result) > 0) {
+                  foreach ($result as $row) {
+                    $carouselColumn[$counter] = new CarouselColumnTemplateBuilder('Dokter '.($counter+1), $row['nama_dokter'], $imageUrl, [
+                        new MessageTemplateActionBuilder('Cek Detail', '/detailjadwal'.$row['id'])
+                    ]);
+                    $counter++;
+                  }
 
-                foreach ($result as $row) {
-                  $carouselColumn[$counter] = new CarouselColumnTemplateBuilder('Dokter '.($counter+1), $row['nama_dokter'], $imageUrl, [
-                      new MessageTemplateActionBuilder('Cek Detail', '/detailjadwal'.$row['id'])
-                  ]);
-                  $counter++;
+                  $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn);
+                  $templateMessage = new TemplateMessageBuilder('Jadwal Praktek', $carouselTemplateBuilder);
+                } else {
+                  $templateMessage = new TextMessageBuilder("Maaf, hari ini tidak ada dokter yang membuka jadwal praktek.".emoticonBuilder("100010"));
                 }
-
-                $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn);
-                $templateMessage = new TemplateMessageBuilder('Jadwal Praktek', $carouselTemplateBuilder);
 
                 $q1 = "select nama_poli from poli where id=".$event['message']['text'];
 
