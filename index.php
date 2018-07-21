@@ -63,9 +63,14 @@ function executeQuery($pdo, $query){
     echo $e->getMessage();
   }
 }
-$statement = executeQuery($pdo, "SELECT * FROM POLI");
-$rslt = $statement->fetchAll();
-$rslt = array();
+try{
+  $stmt = $pdo->prepare("SELECT * FROM POLI");
+  $stmt->execute();
+  $rslt = $stmt->fetchAll();
+  $rslt = array();
+} catch (PDOException $e) {
+  echo $e->getMessage();
+}
 $tet = "null\n";
 foreach ($rslt as $row) {
   // code...
