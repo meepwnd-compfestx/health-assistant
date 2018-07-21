@@ -13,7 +13,7 @@ $dbname = $db['dbname'];
 $user = $db['user'];
 $password = $db['password'];
 
-$conn = pg_connect($host." ".$port." ".$dbname." ".$user." ".$password)
+$conn = pg_connect("host=".$host." port=".$port." dbname=".$dbname." user=".$user." password=".$password)
   or die('Could not connect: ' . pg_last_error());
 /*try{
 //Set DSN data source name
