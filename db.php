@@ -13,7 +13,7 @@ try{
   $user = $db['user'];
   $password = $db['password'];
 
-  $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password;sslmode=require;";
+  $dsn = "pgsql:host=$host;port=$port;dbname=$dbname;user=$user;password=$password;";
 //create a pdo instance
   $pdo = new PDO($dsn, $db['user'], $db['password']);
   $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_OBJ);
