@@ -128,7 +128,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
               } else if (mb_strtolower($event['message']['text']) == "lihat jadwal praktek"
                           || mb_strtolower($event['message']['text']) == "lihat jadwal") {
 
-                $text = "Mau lihat jadwal praktek poli apa?";
+                $text = "Mau lihat jadwal praktek poli apa?\n";
                 $array = executeQuery($conn, "select * from public.poli");
 
                 foreach ($array as $row) {
