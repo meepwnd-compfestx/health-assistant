@@ -149,13 +149,14 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                 $carouselColumn = array();
                 $counter = 0;
+
                 $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like ".generateDay(date('N'));
 
                 $result = executeQuery($conn, $q);
 
                 foreach ($result as $row) {
                   $carouselColumn[$counter] = new CarouselColumnTemplateBuilder('Dokter '.($counter+1), $row['nama_dokter'], $imageUrl, [
-                      new MessageTemplateActionBuilder('Cek Detail', '/detailjadwal')
+                      new MessageTemplateActionBuilder('Cek Detail', '/detailjadwal'.$row['id'])
                   ]);
                   $counter++;
                 }
@@ -177,6 +178,17 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 ->add($templateMessage);
 
                 $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+              } else if (substr($event['message']['text'], 0, 13) == "/detailjadwal") {
+                $query = "select b.nama_poli, a.nama_dokter, a.hari, a.jam from jadwal a join poli b on a.id_poli = b.id where a.id="
+                    .substr($event['message']['text'], 12, -1);
+                $result = executeQuery($conn, $query);
+                foreach($result as $row){
+                  $bot->replyText($event['replyToken'], "-------Detail Jadwal Praktek-------\n"
+                    .emoticonBuilder("10004E")." Nama Poli: ".$row['nama_poli']
+                    .emoticonBuilder("100041")." Nama Dokter: ".$row['nama_dokter']
+                    .emoticonBuilder("1000A9")." Hari: ".$row['hari']
+                    .emoticonBuilder("100071")." Jam: ".$row['jam']);
+                }
               }
             }
         }
