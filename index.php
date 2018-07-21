@@ -183,7 +183,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
               } else if (substr($event['message']['text'], 0, 13) == "/detailjadwal") {
                 $query = "select b.nama_poli, a.nama_dokter, a.hari, a.jam from jadwal a join poli b on a.id_poli = b.id where a.id="
-                    .substr($event['message']['text'], 13, -1);
+                    .substr($event['message']['text'], 13, 3);
                 $result = executeQuery($conn, $query);
                 foreach($result as $row){
                   $bot->replyText($event['replyToken'], "-------Detail Jadwal Praktek-------\n"
