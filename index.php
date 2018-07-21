@@ -65,9 +65,12 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
       $data = json_decode($body, true);
       if(is_array($data['events'])){
-        foreach ($data['events'] as $event)
-        {
-            if ($event['type'] == 'message')
+      foreach ($data['events'] as $event)
+      {
+          if ($event['type'] == 'message')
+          {
+            if (substr($event['message']['text'], 0, 19) != "lihat jadwal dokter"
+                || substr($event['message']['text'], 0, 13) != "jadwal dokter")
             {
               if (mb_strtolower(substr($event['message']['text'], 0, 6)) == 'apakah'
                   && substr($event['message']['text'], -1) == '?') {
@@ -100,8 +103,11 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 // code...
                 $result = $bot->replyText($event['replyToken'], 'Hai ! Aku health-assistant siap membantu anda ! '.emoticonBuilder("10008D").
               "\nMaaf, saat ini saya hanya bisa menampilkan jadwal praktek dari Rumah Sakit Universitas Brawijaya Malang :(".
-              "\nCukup ketik saja 'Lihat lokasi RS' jika ingin melihat lokasinya.");
-              //case 1a "lihat lokasi rs"
+              "\nCukup ketik saja\n\n'Lihat lokasi RS'\n\njika ingin melihat lokasinya.");
+
+//      CASE
+//      1a
+
               } else if (mb_strtolower($event['message']['text']) == "lihat lokasi rs"
                           || mb_strtolower($event['message']['text']) == "lokasi rs"
                           || mb_strtolower($event['message']['text']) == "lihat rs") {
@@ -123,8 +129,11 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                   $multiMessageBuilder->add($templateMessage)
                   ->add(new TextMessageBuilder("Apakah anda ingin melihat jadwal prakteknya juga?".
-                    "\nKetik saja 'lihat jadwal praktek'"));
+                    "\nKetik saja\n\n'lihat jadwal praktek'"));
                   $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+
+//     CASE
+//     1b
               } else if (mb_strtolower($event['message']['text']) == "lihat jadwal praktek"
                           || mb_strtolower($event['message']['text']) == "lihat jadwal") {
 
@@ -140,47 +149,43 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 /*session_start();
                 $_SESSION['CONV'] = "TRUE";*/
                 $bot->replyText($event['replyToken'], $text);
+
+//      CASE
+//      1c
+
+
               } else if ($event['message']['text'] >= 1 && $event['message']['text'] <= 19) {
-                // code...
+                  // code...
                 $multiMessageBuilder = new MultiMessageBuilder();
-
-                //carousel message
+                  //carousel message
                 $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/static/open.png';
-
                 $carouselColumn = array();
                 $counter = 0;
 
-                $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like ".generateDay(date('N'));
+              $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like ".generateDay(date('N'));
 
-                $result = executeQuery($conn, $q);
+              $result = executeQuery($conn, $q);
                 if ($result) {
                   foreach ($result as $row) {
                     $carouselColumn[$counter] = new CarouselColumnTemplateBuilder('Dokter '.($counter+1), $row['nama_dokter'], $imageUrl, [
                         new MessageTemplateActionBuilder('Cek Detail', '/detailjadwal'.$row['id'])
-                    ]);
-                    $counter++;
+                      ]);
+                  $counter++;
                   }
-
-                  $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn);
+                    $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn);
                   $templateMessage = new TemplateMessageBuilder('Jadwal Praktek', $carouselTemplateBuilder);
                 } else {
                   $templateMessage = new TextMessageBuilder("Maaf, hari ini (".mb_strtolower(generateDay(date('N'))).") tidak ada dokter yang membuka jadwal praktek.".emoticonBuilder("100010"));
                 }
-
-                $q1 = "select nama_poli from poli where id=".$event['message']['text'];
-
-                $result1 = executeQuery($conn, $q1);
-
-                $selectedPoli = "";
-
-                foreach ($result1 as $row) {
+                  $q1 = "select nama_poli from poli where id=".$event['message']['text'];
+                  $result1 = executeQuery($conn, $q1);
+                  $selectedPoli = "";
+                  foreach ($result1 as $row) {
                   $selectedPoli = $row['nama_poli'];
                 }
-
-                $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli ".$selectedPoli))
+                  $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli ".$selectedPoli))
                 ->add($templateMessage);
-
-                $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
+                  $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
               } else if (substr($event['message']['text'], 0, 13) == "/detailjadwal") {
                 $query = "select b.nama_poli, a.nama_dokter, a.hari, a.jam from jadwal a join poli b on a.id_poli = b.id where a.id="
                     .substr($event['message']['text'], 13, 3);
@@ -193,9 +198,14 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                     .emoticonBuilder("100071")." Jam: ".$row['jam']);
                 }
               }
+            } else if (substr($event['message']['text'], 0, 19) == "lihat jadwal dokter"
+                || substr($event['message']['text'], 0, 13) == "jadwal dokter")
+            {
+
             }
-        }
+          }
       }
+    }
 });
 
 $app->run();
