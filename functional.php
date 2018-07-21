@@ -18,25 +18,25 @@ function generateDay($currDay){
 
   if ($currDay == 1) {
     // code...
-    return "SENIN";
+    return "'SENIN'";
   } else if ($currDay == 2) {
     // code...
-    return "SELASA";
+    return "'SELASA'";
   } else if ($currDay == 3) {
     // code...
-    return "RABU";
+    return "'RABU'";
   } else if ($currDay == 4) {
     // code...
-    return "KAMIS";
+    return "'KAMIS'";
   } else if ($currDay == 5) {
     // code...
-    return "JUMAT";
+    return "'JUMAT'";
   } else if ($currDay == 6) {
     // code...
-    return "SABTU";
+    return "'SABTU'";
   } else if ($currDay == 7) {
     // code...
-    return "MINGGU";
+    return "'MINGGU'";
   }
 }
 ?>

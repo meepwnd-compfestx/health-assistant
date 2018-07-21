@@ -149,7 +149,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                 $carouselColumn = array();
                 $counter = 0;
-                $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like \'".generateDay(date('N')."\'");
+                $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like ".generateDay(date('N'));
 
                 $result = executeQuery($conn, $q);
 
