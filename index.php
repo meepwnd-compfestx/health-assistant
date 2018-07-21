@@ -43,12 +43,12 @@ $app = new Slim\App($configs);
 $app->get('/', function($request, $response) use($channel_access_token, $channel_secret, $pdo)
 {
   echo "OK\n";
-  $statement = executeQuery($pdo, "select * from poli");
+  $statement = executeQuery($pdo, "SELECT * FROM POLI");
   $rslt = $statement->fetchAll();
   $rslt = array();
   foreach ($rslt as $row) {
     // code...
-    $tet = $row->id.". ".$row->nama_poli."\n";
+    $tet = $row->ID.". ".$row->NAMA_POLI."\n";
   }
   echo $tet;
 });
