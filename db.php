@@ -22,4 +22,5 @@ function executeQuery($pdo, $query){
   } catch (PDOException $e) {
     echo $e->getMessage();
   }
+}
 ?>
