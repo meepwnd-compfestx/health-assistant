@@ -140,7 +140,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                 /*session_start();
                 $_SESSION['CONV'] = "TRUE";*/
                 $bot->replyText($event['replyToken'], $text);
-              } else if ($event['message']['text'] >= 1 && $event['message']['text'] <= 10) {
+              } else if ($event['message']['text'] >= 1 && $event['message']['text'] <= 19) {
                 // code...
                 $multiMessageBuilder = new MultiMessageBuilder();
 
@@ -149,7 +149,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                 $carouselColumn = array();
                 $counter = 0;
-                $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like ".generateDay(date('N'));
+                $q = "select * from public.jadwal where id_poli=".$event['message']['text']." and hari like '".generateDay(date('N')."'");
 
                 $result = executeQuery($conn, $q);
 
