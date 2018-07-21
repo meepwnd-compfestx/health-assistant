@@ -17,7 +17,7 @@ include('functional.php');
 // set false for production
 $pass_signature = true;
 
-require 'db.php';
+require ("db.php");
 
 // set LINE channel_access_token and channel_secret
 $channel_access_token = $_ENV['CHANNEL_ACCESS_TOKEN'];
@@ -35,20 +35,18 @@ $configs =  [
 $app = new Slim\App($configs);
 
 //home route
-$app->get('/', function($request, $response) use($channel_access_token, $channel_secret, $pdo)
+$app->get('/', function($request, $response) use($channel_access_token, $channel_secret, $conn)
 {
   echo "OK\n";
-  $statement = executeQuery($pdo, "SELECT * FROM POLI");
-  $rslt = $statement->fetchAll();
-  $rslt = array();
-  foreach ($rslt as $row) {
+  $array = executeQuery($conn, "SELECT * FROM POLI");
+  foreach ($array as $row) {
     // code...
     $tet = $row->ID.". ".$row->NAMA_POLI."\n";
   }
   echo $tet;
 });
 
-$app->post('/webhook', function ($request, $response) use ($bot, $pass_signature, $pdo)
+$app->post('/webhook', function ($request, $response) use ($bot, $pass_signature, $conn)
 {
   // get request body and line signature header
 
@@ -130,10 +128,9 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                           || mb_strtolower($event['message']['text']) == "lihat jadwal") {
 
                 $text = "Mau lihat jadwal praktek poli apa?";
-                $statement = executeQuery($pdo, "select * from poli");
-                $rslt = $statement->fetchAll();
-                $rslt = array();
-                foreach ($rslt as $row) {
+                $array = executeQuery($conn, "select * from poli");
+                
+                foreach ($array as $row) {
                   // code...
                   $text = $text.$row->id.". ".$row->nama_poli."\n";
                 }

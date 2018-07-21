@@ -7,13 +7,9 @@ function emoticonBuilder($code){
 }
 
 
-function executeQuery($pdo, $query){
-  try{
-    $stmt = $pdo->prepare($query);
-    $stmt->execute();
-    return $stmt;
-  } catch (PDOException $e) {
-    echo $e->getMessage();
-  }
+function executeQuery($conn, $query){
+  $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+  $array = pg_fetch_all($result);
+  return $array;
 }
 ?>
