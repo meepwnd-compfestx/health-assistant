@@ -7,5 +7,13 @@ function emoticonBuilder($code){
 }
 
 
-
+function executeQuery($pdo, $query){
+  try{
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    return $stmt;
+  } catch (PDOException $e) {
+    echo $e->getMessage();
+  }
+}
 ?>
