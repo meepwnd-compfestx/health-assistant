@@ -41,7 +41,7 @@ $app->get('/', function($request, $response) use($channel_access_token, $channel
   $arr = executeQuery($conn, "select * from public.poli");
   foreach ($array as $row) {
     // code...
-    $tet = $row->ID.". ".$row->NAMA_POLI."\n";
+    $tet = $row['ID'].". ".$row['NAMA_POLI']."\n";
   }
   print_r($arr);
   echo $tet;
@@ -133,7 +133,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                 foreach ($array as $row) {
                   // code...
-                  $text = $text.$row->ID.". ".$row->NAMA_POLI."\n";
+                  $text = $text.$row['ID'].". ".$row['NAMA_POLI']."\n";
                 }
                 $text = $text."Ketikkan nomornya saja.";
                 //mulai session
