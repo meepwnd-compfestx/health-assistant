@@ -126,7 +126,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   } else {
                     $templateMessage = new TextMessageBuilder("Tidak ditemukan rumah sakitnya :(");
                   }
-                    $multiMessageBuilder->add(new TextMessageBuilder("Halo juga !! Bagaimana kabarmu? Semoga selalu baik-baik saja kayak RIDOROMA yaa ."emoticonBuilder("100007")."
+                    $multiMessageBuilder->add(new TextMessageBuilder("Halo juga !! Bagaimana kabarmu? Semoga selalu baik-baik saja kayak RIDOROMA yaa ".emoticonBuilder("100007")."
                     \nBerikut adalah daftar rumah sakit di kota Malang "))
                     ->add($templateMessage);
                     $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
