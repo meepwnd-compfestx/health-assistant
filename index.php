@@ -98,8 +98,13 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
                 $result = $bot->replyText($event['replyToken'], 'oyiiiii sam '.emoticonBuilder("100078"));
 
-              } else if (mb_strtolower($event['message']['text']) == "halo"
-                          || mb_strtolower($event['message']['text']) == "halo bot") {
+              } else if (mb_strtolower($event['message']['text']) == "halo bot"
+                        || mb_strtolower($event['message']['text']) == "hai bot"
+                        || substr(mb_strtolower($event['message']['text']), 0, 4) == "halo"
+                        || substr(mb_strtolower($event['message']['text']), 0, 2) == "hi"
+                        || substr(mb_strtolower($event['message']['text']), 0, 3) == "hai"
+                        || mb_strtolower($event['message']['text']) == "halo ridoroma"
+                        || mb_strtolower($event['message']['text']) == "hai ridoroma") {
                   // code...
                   $multiMessageBuilder = new MultiMessageBuilder();
                     //carousel message
@@ -121,7 +126,8 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   } else {
                     $templateMessage = new TextMessageBuilder("Tidak ditemukan rumah sakitnya :(");
                   }
-                    $multiMessageBuilder->add(new TextMessageBuilder("Halo juga !!\nBerikut adalah daftar rumah sakit di kota Malang "))
+                    $multiMessageBuilder->add(new TextMessageBuilder("Halo juga !! Bagaimana kabarmu? Semoga selalu baik-baik saja kayak RIDOROMA yaa ."emoticonBuilder("100007")."
+                    \nBerikut adalah daftar rumah sakit di kota Malang "))
                     ->add($templateMessage);
                     $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
 
@@ -224,6 +230,15 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             {
 
             }
+          } else if ($event['type'] == "follow") {
+            $bot->replyText($event['replyToken'], "Hai kak! Terima kasih sudah menambahkanku sebagai teman yaa! Perkenalkan aku RIDOROMA (Cari Dokter Robot Masyarakat) ".emoticonBuilder("100078")
+                  ."\n\nJangan lupa sapa aku yaa! Aku bisa membantu permasalahanmu untuk mencari jadwal praktek lhoo :)");
+          } else if ($event['type'] == "join") {
+            $bot->replyText($event['replyToken'], "Hai guys! Terima kasih telah mengundangku di ruang chat ini ".emoticonBuilder("10008D")
+                            ."\n\nJika butuh bantuanku, tinggal sapa aku saja yaa :)");
+          } else if ($event['type'] == "leave") {
+            $bot->replyText($event['replyToken'], "Yahh kenapa kakak se-tega ini sama RIDOROMA :( Yaudah deh aku cuma bisa pasrah ".emoticonBuilder("100094")
+                            ."Selamat tinggal teman-teman~");
           }
       }
     }
