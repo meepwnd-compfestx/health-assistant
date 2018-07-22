@@ -72,33 +72,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
             if (substr($event['message']['text'], 0, 19) != "lihat jadwal dokter"
                 || substr($event['message']['text'], 0, 13) != "jadwal dokter")
             {
-              if (mb_strtolower(substr($event['message']['text'], 0, 6)) == 'apakah'
-                  && substr($event['message']['text'], -1) == '?') {
-                  //mengacak jawaban kerang kampang
-                  $temp = rand(0, 2);
-                  if ($temp == 0) {
-                    # code...
-                    $result = $bot->replyText($event['replyToken'], 'Tidak');
-
-                    return $response->withJson($result->getJSONDecodedBody(), $result->getHTTPStatus());
-                  } else if ($temp == 1) {
-                    # code...
-                    $result = $bot->replyText($event['replyToken'], 'Ya');
-
-                    return $response->withJson($result->getJSONDecodedBody(), $result->getHTTPStatus());
-                  } else if ($temp == 2) {
-                    # code...
-                    $result = $bot->replyText($event['replyToken'], 'Bisa Jadi');
-
-                    return $response->withJson($result->getJSONDecodedBody(), $result->getHTTPStatus());
-                  }
-              } else if (mb_strtolower($event['message']['text']) == "oyi"
-                      || mb_strtolower($event['message']['text']) == "oyii"
-                      || mb_strtolower($event['message']['text']) == "oyi lur") {
-
-                $result = $bot->replyText($event['replyToken'], 'oyiiiii sam '.emoticonBuilder("100078"));
-
-              } else if (mb_strtolower($event['message']['text']) == "halo bot"
+              if (mb_strtolower($event['message']['text']) == "halo bot"
                         || mb_strtolower($event['message']['text']) == "hai bot"
                         || substr(mb_strtolower($event['message']['text']), 0, 4) == "halo"
                         || substr(mb_strtolower($event['message']['text']), 0, 2) == "hi"
