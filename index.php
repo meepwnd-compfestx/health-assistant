@@ -117,7 +117,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                         $counter++;
                     }
                       $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn);
-                      $templateMessage = new TemplateMessageBuilder('Jadwal Praktek', $carouselTemplateBuilder);
+                      $templateMessage = new TemplateMessageBuilder('Daftar Rumah Sakit', $carouselTemplateBuilder);
                   } else {
                     $templateMessage = new TextMessageBuilder("Tidak ditemukan rumah sakitnya :(");
                   }
