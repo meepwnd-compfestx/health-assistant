@@ -188,7 +188,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
               $result = executeQuery($conn, $q);
                 if ($result) {
                   foreach ($result as $row) {
-                    $carouselColumn[$counter] = new CarouselColumnTemplateBuilder('Dokter '.($counter+1), $row['nama_dokter'], $imageUrl, [
+                    $carouselColumn[$counter] = new CarouselColumnTemplateBuilder($row['jam'], $row['nama_dokter'], $imageUrl, [
                         new MessageTemplateActionBuilder('Cek Detail', '/detailjadwal'.$row['id'])
                       ]);
                   $counter++;
