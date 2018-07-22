@@ -100,31 +100,52 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 
               } else if (mb_strtolower($event['message']['text']) == "halo"
                           || mb_strtolower($event['message']['text']) == "halo bot") {
-                // code...
-                $result = $bot->replyText($event['replyToken'], 'Hai ! Aku health-assistant siap membantu anda ! '.emoticonBuilder("10008D").
-              "\nMaaf, saat ini saya hanya bisa menampilkan jadwal praktek dari Rumah Sakit Universitas Brawijaya Malang :(".
-              "\nCukup ketik saja\n\n'Lihat lokasi RS'\n\njika ingin melihat lokasinya.");
+                  // code...
+                  $multiMessageBuilder = new MultiMessageBuilder();
+                    //carousel message
+                  $carouselColumn = array();
+                  $counter = 0;
+
+                  $q = "select * from rumah_sakit";
+
+                  $result = executeQuery($conn, $q);
+                  if ($result) {
+                    foreach ($result as $row) {
+                      $carouselColumn[$counter] = new CarouselColumnTemplateBuilder('Rumah Sakit '.$row['id'], $row['nama'], $row['link_gambar'], [
+                          new MessageTemplateActionBuilder('Cari Lokasi', '/detaillokasi'.$row['id'])
+                        ]);
+                        $counter++;
+                    }
+                      $carouselTemplateBuilder = new CarouselTemplateBuilder($carouselColumn);
+                      $templateMessage = new TemplateMessageBuilder('Jadwal Praktek', $carouselTemplateBuilder);
+                  } else {
+                    $templateMessage = new TextMessageBuilder("Tidak ditemukan rumah sakitnya :(");
+                  }
+                    $multiMessageBuilder->add(new TextMessageBuilder("Halo juga !!\nBerikut adalah daftar rumah sakit di kota Malang "))
+                    ->add($templateMessage);
+                    $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
 
 //      CASE
 //      1a
 
-              } else if (mb_strtolower($event['message']['text']) == "lihat lokasi rs"
-                          || mb_strtolower($event['message']['text']) == "lokasi rs"
-                          || mb_strtolower($event['message']['text']) == "lihat rs") {
+                } else if (substr($event['message']['text'], 0, 13) == "/detaillokasi") {
                 // code
+                $id = substr($event['message']['text'], 13, 1);
                 //buat template message untuk menampung banyak message type (multiple)
                   $multiMessageBuilder = new MultiMessageBuilder();
 
+                  $result = executeQuery($conn, "select * from rumah_sakit where id=".$id);
                   //button message
-                  $imageUrl = 'https://meepwnd-health-assistant.herokuapp.com/static/rs-logo-1.png';
-                  $buttonTemplateBuilder = new ButtonTemplateBuilder(
-                    'RSUB',
-                    'Jl. Soekarno - Hatta',
-                    $imageUrl,
-                    [
-                      new UriTemplateActionBuilder('Lokasi', 'https://www.google.com/maps/place/Rumah+Sakit+Universitas+Brawijaya/@-7.9408252,112.6210425,18z/data=!4m5!3m4!1s0x2dd629e076b6db3f:0xe31a591bdc49e6fe!8m2!3d-7.9409421!4d112.6217452')
-                    ]
-                  );
+                  foreach ($result as $row) {
+                    $buttonTemplateBuilder = new ButtonTemplateBuilder(
+                      'Rumah Sakit '.$row['id'],
+                      $row['nama'],
+                      $row['link_gambar'],
+                      [
+                        new UriTemplateActionBuilder('Lokasi', $row['link_gmaps'])
+                      ]
+                    );
+                  }
                   $templateMessage = new TemplateMessageBuilder('Lokasi Rumah Sakit', $buttonTemplateBuilder);
 
                   $multiMessageBuilder->add($templateMessage)
@@ -183,7 +204,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
                   foreach ($result1 as $row) {
                   $selectedPoli = $row['nama_poli'];
                 }
-                  $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli ".$selectedPoli))
+                  $multiMessageBuilder->add(new TextMessageBuilder("Berikut adalah jadwal dari poli ".$selectedPoli." untuk hari ini."))
                 ->add($templateMessage);
                   $res = $bot->replyMessage($event['replyToken'], $multiMessageBuilder);
               } else if (substr($event['message']['text'], 0, 13) == "/detailjadwal") {
