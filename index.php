@@ -155,7 +155,7 @@ $app->post('/webhook', function ($request, $response) use ($bot, $pass_signature
 //      1c
 
 
-              } else if ($event['message']['text'] >= 1 && $event['message']['text'] <= 19) {
+            } else if ($event['message']['text'] >= 1 && $event['message']['text'] <= 18) {
                   // code...
                 $multiMessageBuilder = new MultiMessageBuilder();
                   //carousel message
